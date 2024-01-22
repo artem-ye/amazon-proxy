@@ -1,15 +1,12 @@
-const { connect, close } = require('../../src/core/db/db');
 const CredentialsModel = require('../../src/core/db/models/Credentials.model');
+const { connect, close, clear } = require('../_mock/testDb');
 
 beforeAll(async () => {
 	await connect();
 });
 
 afterAll(async () => {
-	await CredentialsModel.deleteMany({ client_id: 'test' });
-	await CredentialsModel.deleteMany({ client_id: 'test_fields_validation' });
-	await CredentialsModel.deleteMany({ client_id: 'test_with_token' });
-	await CredentialsModel.deleteMany({ client_id: 'test_duplicated' });
+	await clear();
 	await close();
 });
 
@@ -36,10 +33,6 @@ describe('CredentialsModel', () => {
 			await CredentialsModel.create({
 				client_id: 'test_fields_validation',
 				client_secret: '',
-			});
-
-			const res = await CredentialsModel.find({
-				client_id: 'test_fields_validation',
 			});
 			expect('Fields validation should throw').toBeFalsy();
 		} catch (err) {
