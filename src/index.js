@@ -1,1 +1,3 @@
-console.log('app starts');
+const HttpServer = require('./core/http');
+
+HttpServer();
