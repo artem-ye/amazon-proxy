@@ -1,0 +1,23 @@
+{
+  "name": "amazon-api-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest .",
+    "dev": "NODE_ENV='development' nodemon src/index.js"
+  },
+  "author": "ay <shelmafona@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.2",
+    "fastify": "^4.25.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "eslint": "^8.56.0",
+    "eslint-plugin-jest": "^27.6.3",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.3"
+  }
+}
