@@ -5,7 +5,6 @@ it('Server starts without errors', async () => {
 
 	try {
 		server.start();
-		const instance = server.instance;
 		await server.ready();
 		await server.close();
 	} catch (err) {
