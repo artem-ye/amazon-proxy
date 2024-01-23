@@ -1,10 +1,16 @@
 const TokensModel = require('../../src/core/db/models/AmazonTokens.model');
 const tokensService = require('../../src/services/amazonTokens.service');
-const { connect, close } = require('../_mock/testDb');
+const { connect, close, clear } = require('../_mock/testDb');
+
+const mongoose = require('mongoose');
 
 beforeAll(async () => {
 	await connect();
-	TokensModel.create({
+});
+
+beforeEach(async () => {
+	await clear();
+	await TokensModel.create({
 		client_id: 'test_token_id',
 		client_secret: 'test_token_secret',
 		tokens: {
@@ -49,9 +55,9 @@ test('id', async () => {
 	});
 });
 
-describe('getTokensById', () => {
+describe('getTokens', () => {
 	it('unexciting tokens returns null', async () => {
-		const res = await tokensService.getTokensById('foo');
+		const res = await tokensService.getTokens('foo');
 		expect(res).toBeFalsy();
 	});
 
@@ -61,12 +67,66 @@ describe('getTokensById', () => {
 		});
 
 		expect(_id).toBeTruthy();
-		const res = await tokensService.getTokensById(_id);
+		const res = await tokensService.getTokens(_id);
 		expect(res).toMatchObject({
 			access_token: 'access',
 			refresh_token: 'refresh',
 			expires_in: 3000,
 			token_type: 'Bearer',
 		});
+	});
+});
+
+describe('setTokens', () => {
+	it('tokens correctly updates', async () => {
+		const { _id } = await TokensModel.findOne({
+			client_id: 'test_token_id',
+		});
+
+		await tokensService.setTokens(_id, {
+			access_token: 'access_1',
+			refresh_token: 'refresh_1',
+			expires_in: 3000,
+			token_type: 'Bearer',
+		});
+
+		const { tokens } = await TokensModel.findById(_id);
+		expect(tokens).toMatchObject({
+			access_token: 'access_1',
+			refresh_token: 'refresh_1',
+			expires_in: 3000,
+			token_type: 'Bearer',
+		});
+	});
+
+	it('incorrect data throw error', async () => {
+		const invalidId = new mongoose.Types.ObjectId();
+
+		const { _id: validId } = await TokensModel.findOne({
+			client_id: 'test_token_id',
+		});
+
+		try {
+			await tokensService.setTokens(invalidId, {
+				access_token: 'access_1',
+				refresh_token: 'refresh_1',
+				expires_in: 3000,
+				token_type: 'Bearer',
+			});
+			expect('Invalid data does not throw').toMatch('error');
+		} catch (err) {
+			expect(err).toBeDefined();
+		}
+
+		try {
+			await tokensService.setTokens(validId, {
+				refresh_token: 'refresh_1',
+				expires_in: 3000,
+				token_type: 'Bearer',
+			});
+			expect('Invalid data does not throw').toMatch('error');
+		} catch (err) {
+			expect(err).toBeDefined();
+		}
 	});
 });

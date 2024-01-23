@@ -14,11 +14,21 @@ const amazonTokensService = {
 
 		return res?._id || null;
 	},
-	getTokensById: async (_id) => {
+	getTokens: async (_id) => {
 		if (!_id || !ObjectId.isValid(_id)) return null;
 
 		const res = await TokensModel.findById(_id);
 		return res.toObject()?.tokens || null;
+	},
+	setTokens: async (_id, tokens) => {
+		const record = await TokensModel.findById(_id);
+
+		if (!record) {
+			throw new Error(`setTokens error: record _id ${_id} not exists`);
+		}
+
+		record.tokens = tokens;
+		await record.save();
 	},
 	findAll: async () => {
 		const res = await TokensModel.find({});
