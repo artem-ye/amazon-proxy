@@ -13,6 +13,6 @@ const schema = new Schema({
 	tokens: tokensSchema,
 });
 
-const CredentialsModel = model('Credentials', schema);
+const AmazonTokensModel = model('Credentials', schema);
 
-module.exports = CredentialsModel;
+module.exports = AmazonTokensModel;
