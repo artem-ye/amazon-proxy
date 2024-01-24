@@ -5,7 +5,7 @@ const handler = (opts) => (req) => {
 	const { prefix } = opts;
 	const prefixLessUrl = url.substr(prefix.length);
 
-	return { body, url: prefixLessUrl, method, headers, prefix };
+	return { body, url: prefixLessUrl, method, headers };
 };
 
 const authPreHandler = async (req, res) => {
