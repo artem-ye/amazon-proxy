@@ -8,7 +8,7 @@ class AmazonOAuthApiClient {
 		this.api_endpoint = options.api_endpoint || OAUTH_ENDPOINT;
 		const { getCredentials, saveTokens } = options;
 		this.db = { getCredentials, saveTokens };
-		// this.refreshRequest = null;
+		this.refreshRequest = null;
 	}
 
 	async login() {
@@ -27,19 +27,27 @@ class AmazonOAuthApiClient {
 	}
 
 	async refreshToken() {
-		const { client_id, client_secret, refresh_token } =
-			await this.db.getCredentials();
-		this.#validateOauthCredentials({ client_id, client_secret });
-		this.#validateOAuthRefreshToken({ refresh_token });
+		if (!this.refreshRequest) {
+			this.refreshRequest = true;
 
-		const params = {
-			grant_type: 'refresh_token',
-			client_id,
-			client_secret,
-			refresh_token,
-		};
-		const data = await this.#oauthRequest(params);
+			const { client_id, client_secret, refresh_token } =
+				await this.db.getCredentials();
+			this.#validateOauthCredentials({ client_id, client_secret });
+			this.#validateOAuthRefreshToken({ refresh_token });
+
+			const params = {
+				grant_type: 'refresh_token',
+				client_id,
+				client_secret,
+				refresh_token,
+			};
+
+			this.refreshRequest = this.#oauthRequest(params);
+		}
+
+		const data = await this.refreshRequest;
 		await this.db.saveTokens(data);
+		this.refreshRequest = null;
 		return data;
 	}
 
