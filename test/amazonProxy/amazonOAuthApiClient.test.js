@@ -83,5 +83,5 @@ describe('refreshToken', () => {
 		expect(mockCredentials).toMatchObject(RESPONSE_BODY);
 	});
 
-	it.todo('correct refreshToken request should fil');
+	it.todo('incorrect refreshToken request should fail');
 });
