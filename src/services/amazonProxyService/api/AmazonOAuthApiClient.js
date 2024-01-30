@@ -11,6 +11,10 @@ class AmazonOAuthApiClient {
 		this.refreshRequest = null;
 	}
 
+	async getCredentials() {
+		return this.db.getCredentials();
+	}
+
 	async login() {
 		const { client_id, client_secret } = await this.db.getCredentials();
 		this.#validateOauthCredentials({ client_id, client_secret });

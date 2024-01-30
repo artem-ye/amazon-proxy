@@ -14,6 +14,30 @@ const amazonTokensService = {
 
 		return res?._id || null;
 	},
+	isLoggedIn: async (id) => {
+		if (!id) return false;
+
+		const res = await TokensModel.findById(id);
+		if (!res) return false;
+
+		return !!(res.tokens?.access_token && res.tokens?.refresh_token);
+	},
+	getCredentials: async (id) => {
+		if (!id) return null;
+
+		const record = await TokensModel.findById(id);
+		if (!record) return null;
+
+		const { client_id, client_secret } = record;
+		const { access_token, refresh_token } = record?.tokens || {};
+
+		return {
+			client_id,
+			client_secret,
+			access_token,
+			refresh_token,
+		};
+	},
 	getTokens: async (_id) => {
 		if (!_id || !ObjectId.isValid(_id)) return null;
 
@@ -27,7 +51,7 @@ const amazonTokensService = {
 			throw new Error(`setTokens error: record _id ${_id} not exists`);
 		}
 
-		record.tokens = tokens;
+		record.tokens = { ...tokens };
 		await record.save();
 	},
 	findAll: async () => {

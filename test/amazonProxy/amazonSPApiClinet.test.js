@@ -1,6 +1,6 @@
 const { default: axios, AxiosError } = require('axios');
 const { default: AxiosMockAdapter } = require('axios-mock-adapter');
-const AmazonSPApiClient = require('../../src/services/amazonProxyService/AmazonSPApiClient');
+const AmazonSPApiClient = require('../../src/services/amazonProxyService/api/AmazonSPApiClient');
 
 const API_ENDPOINT = '/api';
 const TOKEN_EXPIRED_STATUS = 403;

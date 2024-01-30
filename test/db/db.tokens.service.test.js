@@ -129,4 +129,35 @@ describe('setTokens', () => {
 			expect(err).toBeDefined();
 		}
 	});
+
+	it('isLoggedIn', async () => {
+		const record = await TokensModel.findOne({
+			client_id: 'test_token_id',
+			client_secret: 'test_token_secret',
+		});
+
+		const loggedIn = await tokensService.isLoggedIn(record._id);
+		expect(loggedIn).toBeTruthy();
+
+		record.tokens = null;
+		await record.save();
+
+		const notLoggedIn = await tokensService.isLoggedIn(record._id);
+		expect(notLoggedIn).toBe(false);
+	});
+
+	it('getCredentials', async () => {
+		const { _id } = await TokensModel.findOne({
+			client_id: 'test_token_id',
+		});
+
+		const credentials = await tokensService.getCredentials(_id);
+
+		expect(credentials).toMatchObject({
+			client_id: 'test_token_id',
+			client_secret: 'test_token_secret',
+			access_token: 'access',
+			refresh_token: 'refresh',
+		});
+	});
 });
