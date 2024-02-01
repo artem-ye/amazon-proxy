@@ -1,10 +1,10 @@
-const amazonTokensService = require('../amazonTokens.service');
+const amazonTokensService = require('../../../services/amazonTokens.service');
 const createApiClientService = require('./helpers/createApiClientService');
 
 class AmazonProxyService {
 	#api;
 
-	constructor({ createApiClient = createApiClientService }) {
+	constructor({ createApiClient = createApiClientService } = {}) {
 		this.createApi = createApiClient;
 	}
 

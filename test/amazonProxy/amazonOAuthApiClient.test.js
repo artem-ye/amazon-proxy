@@ -1,4 +1,4 @@
-const AmazonOAuthApiClient = require('../../src/services/amazonProxyService/api/AmazonOAuthApiClient');
+const AmazonOAuthApiClient = require('../../src/components/amazonProxy/amazonProxyService/api/AmazonOAuthApiClient');
 const { default: axios } = require('axios');
 const MockAdapter = require('axios-mock-adapter');
 

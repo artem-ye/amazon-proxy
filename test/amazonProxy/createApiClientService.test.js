@@ -3,7 +3,7 @@ const AxiosMockAdapter = require('axios-mock-adapter');
 
 const db = require('../_mock/testDb');
 const AmazonTokensModel = require('../../src/core/db/models/AmazonTokens.model');
-const createApiClientService = require('../../src/services/amazonProxyService/helpers/createApiClientService');
+const createApiClientService = require('../../src/components/amazonProxy/amazonProxyService/helpers/createApiClientService');
 
 const TOKEN_EXPIRED_STATUS = 403;
 const API_ENDPOINT = '/api';

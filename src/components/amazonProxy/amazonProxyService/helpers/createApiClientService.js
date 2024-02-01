@@ -1,4 +1,4 @@
-const amazonTokensService = require('../../amazonTokens.service');
+const amazonTokensService = require('../../../../services/amazonTokens.service');
 const AmazonOAuthApiClient = require('../api/AmazonOAuthApiClient');
 const AmazonSPApiClient = require('../api/AmazonSPApiClient');
 
