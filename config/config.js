@@ -9,6 +9,9 @@ const config = {
 	mongo: {
 		url: process.env.MONGO_URL || '',
 	},
+	credentials_api: {
+		root_token: process.env.ROOT_TOKEN || '',
+	},
 };
 
 module.exports = config;

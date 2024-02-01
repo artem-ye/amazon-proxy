@@ -55,8 +55,10 @@ const amazonTokensService = {
 		await record.save();
 	},
 	findAll: async () => {
-		const res = await TokensModel.find({});
-		return res;
+		return await TokensModel.find({});
+	},
+	create: async (data) => {
+		return await TokensModel.create(data);
 	},
 };
 

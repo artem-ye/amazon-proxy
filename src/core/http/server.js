@@ -1,5 +1,6 @@
 const Fastify = require('fastify');
 const amazonProxyRouter = require('../../components/amazonProxy/routes');
+const credentialsApiRoutes = require('../../components/credentialsApi/routes');
 
 class HttpServer {
 	constructor({ logger = false, port = 3000, host = '127.0.0.1' }) {
@@ -11,7 +12,10 @@ class HttpServer {
 
 	build() {
 		const instance = new Fastify({ logger: this.logger });
+
 		instance.register(amazonProxyRouter, { prefix: '/api/amazon' });
+		instance.register(credentialsApiRoutes, { prefix: '/api/credentials' });
+
 		return instance;
 	}
 
