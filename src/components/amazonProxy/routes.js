@@ -24,11 +24,17 @@ const handler = (opts) => async (req, res) => {
 };
 
 const authPreHandler = async (req, res) => {
-	const { client_id, client_secret } = req.headers;
+	const { client_id = '', client_secret = '' } = req.headers || {};
 	const api = new AmazonProxyService();
 
 	try {
-		await api.authorize({ client_id, client_secret });
+		const authRes = await api.authorize({ client_id, client_secret });
+		if (authRes instanceof Error) {
+			res.code(401).send({
+				error: authRes.message,
+			});
+		}
+
 		req.api = api;
 	} catch (err) {
 		handleError(err, res);

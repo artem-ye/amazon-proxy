@@ -2,7 +2,7 @@ const amazonTokensService = require('../../../services/amazonTokens.service');
 const createApiClientService = require('./helpers/createApiClientService');
 
 class AmazonProxyService {
-	#api;
+	#api; // will be initialized in authorize() method
 
 	constructor({ createApiClient = createApiClientService } = {}) {
 		this.createApi = createApiClient;
@@ -10,7 +10,7 @@ class AmazonProxyService {
 
 	async authorize({ client_id, client_secret }) {
 		if (!client_id || !client_secret) {
-			throw new Error('Credentials validation error: Invalid data');
+			return new Error('Credentials validation error: Invalid data');
 		}
 
 		const token_id = await amazonTokensService.id({
@@ -18,7 +18,7 @@ class AmazonProxyService {
 			client_secret,
 		});
 		if (!token_id) {
-			throw new Error(
+			return new Error(
 				'Authorization error: Given credentials are not exists'
 			);
 		}
