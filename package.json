@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest .",
-    "dev": "NODE_ENV='development' nodemon src/index.js"
+    "dev": "NODE_ENV='development' nodemon src/index.js",
+    "start": "NODE_ENV='prod' node src/index.js"
   },
   "author": "ay <shelmafona@gmail.com>",
   "license": "ISC",

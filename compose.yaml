@@ -1,0 +1,28 @@
+version: '2'
+services:
+  amazon-proxy-app:
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URL=mongodb://amazon-proxy-db/AmazonProxy
+      - HTTP_HOST=0.0.0.0
+      - HTTP_PORT=3000
+      - LOGGING=true
+      #- ROOT_TOKEN=ROOT
+    depends_on:
+      - amazon-proxy-db
+
+  amazon-proxy-db:
+    image: "mongodb/mongodb-community-server:latest"
+    restart: always
+    volumes:
+      - type: volume
+        source: oauth-db-vol
+        target: /data/db    
+
+volumes:
+  oauth-db-vol:
+    external: true
+

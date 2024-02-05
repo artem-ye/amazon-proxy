@@ -1,0 +1,9 @@
+node_modules
+_scripts
+Makefile
+Dockerfile
+test
+.env
+.dockerignore
+.git*
+compose.yaml
